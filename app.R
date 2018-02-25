@@ -40,7 +40,7 @@ ui = shinyUI(navbarPage("Market Basket Analysis",
 ))
 
 # Server Elements
-server <- function(input, output) {
+server = function(input, output) {
   # Data - Basket Format  
   output$basket = renderDT({
     datatable(basket, filter = 'top',rownames = FALSE) 
@@ -52,7 +52,7 @@ server <- function(input, output) {
   })
   
   # Data - Product Info
-  output$product_info= renderDT({
+  output$product_info = renderDT({
     datatable(product_info, filter = 'top',rownames = FALSE) 
   })
  
@@ -62,7 +62,7 @@ server <- function(input, output) {
                                       confidence=input$confidence))
       })
   # Rule Visualization - Table
-  output$rule_table=renderDataTable({
+  output$rule_table = renderDataTable({
     p=inspectDT(rule())[[1]]$data
     
     ratio_list = c('support','confidence','lift')
@@ -70,28 +70,28 @@ server <- function(input, output) {
       p[i] = round(p[i], digits = 2)
     }
     
-    datatable(p,filter="top",caption="Association Rules",rownames = FALSE)  
+    datatable(p,filter='top', caption = 'Association Rules', rownames = FALSE)  
   })
   
  # Rule Visualization - Scatter Plot
-  output$rule_scatter=renderPlotly({
-    plotly_arules(rule(),measure=c("lift","confidence"),shading="support")%>%
-      layout(title="Scatter Plot")
+  output$rule_scatter = renderPlotly({
+    plotly_arules(rule(), measure = c('lift','confidence'), shading = 'support') %>%
+      layout(title = 'Scatter Plot')
   })
   
  # Rule Visualization - Matrix Plot
-  output$rule_matrix_confidence=renderPlotly({
-    plotly_arules(rule(),method="matrix",measure="confidence",shading="confidence",max=20)%>%
-      layout(title="Matrix Plot(Confidence)",
-             xaxis=list(title="Antecedent"),
-             yaxis=list(title="Consequent"))
+  output$rule_matrix_confidence = renderPlotly({
+    plotly_arules(rule(),method  = 'matrix', measure = 'confidence', shading = 'confidence', max = 20) %>%
+      layout(title = 'Matrix Plot(Confidence)',
+             xaxis = list(title = 'Antecedent'),
+             yaxis = list(title = 'Consequent'))
   })
   
  # Rule Visualization - Network Graph
-  output$rule_graph=renderPlot({
-    top_lift<- sort(rule(), decreasing = TRUE, na.last = NA, by = "lift")
-    subrule<- head(top_lift,10)
-    plot(subrule, method="graph",main="Network Graph for Top Ten Rules")
+  output$rule_graph = renderPlot({
+    top_lift = sort(rule(), decreasing = TRUE, na.last = NA, by = 'lift')
+    subrule = head(top_lift,10)
+    plot(subrule, method = 'graph', main='Network Graph for Top Ten Rules')
   })
   
 }
